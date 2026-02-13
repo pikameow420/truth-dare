@@ -69,7 +69,7 @@ export default function Home() {
         <h1 className="text-3xl md:text-4xl font-bold mb-2 bg-gradient-to-r from-pink-400 via-rose-400 to-purple-400 bg-clip-text text-transparent">
           Truth or Dare
         </h1>
-        <p className="text-white/40 text-sm mb-8">3 Year Edition • Valentine&apos;s Special</p>
+        <p className="text-white/40 text-sm mb-8"> Meow Meow Adithi • Valentine&apos;s Special</p>
 
         {!waiting ? (
           <form onSubmit={handleJoin} className="space-y-4">
