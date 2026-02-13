@@ -169,6 +169,9 @@ export function setupGameHandlers(io: Server) {
     console.log(`Client connected: ${socket.id}`);
 
     socket.on('join_room', (payload: JoinPayload) => {
+      // Remove any existing player with same name (rejoining case)
+      gameState.players = gameState.players.filter((p) => p.name !== payload.name);
+
       const existingHumans = getHumanPlayers();
       if (existingHumans.length >= 2) {
         socket.emit('error_message', { message: 'Game is full!' });
@@ -325,6 +328,18 @@ export function setupGameHandlers(io: Server) {
       io.emit('game_reset', {});
       console.log('Game reset');
     });
+
+    // Auto-reset if game is stuck (no players for 30 seconds)
+    setTimeout(() => {
+      if (gameState.players.filter(p => !p.isAI).length === 0 && gameState.gameStarted) {
+        console.log('Auto-resetting game - no human players');
+        clearTimer();
+        gameState.players = [];
+        gameState.gameStarted = false;
+        gameState.gameEnded = false;
+        io.emit('game_reset', {});
+      }
+    }, 30000);
   });
 }
 

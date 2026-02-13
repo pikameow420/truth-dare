@@ -30,10 +30,18 @@ export default function Home() {
       setWaiting(false);
     });
 
+    socket.on('game_reset', () => {
+      setWaiting(false);
+      setPlayers([]);
+      setError('');
+      setName('');
+    });
+
     return () => {
       socket.off('player_joined');
       socket.off('game_start');
       socket.off('error_message');
+      socket.off('game_reset');
     };
   }, [router]);
 
@@ -47,6 +55,11 @@ export default function Home() {
     socket.emit('join_room', { name: name.trim() });
     setWaiting(true);
     setJoining(false);
+  };
+
+  const handleReset = () => {
+    const socket = getSocket();
+    socket.emit('reset_game');
   };
 
   const humanPlayers = players.filter((p) => !p.isAI);
@@ -121,6 +134,15 @@ export default function Home() {
 
         {error && (
           <p className="mt-4 text-red-400 text-sm animate-fade-in">{error}</p>
+        )}
+
+        {error && (
+          <button
+            onClick={handleReset}
+            className="mt-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg text-white/60 hover:text-white text-xs transition-all cursor-pointer"
+          >
+            Reset Game
+          </button>
         )}
       </div>
     </div>
