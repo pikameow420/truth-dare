@@ -11,10 +11,10 @@ import {
 import { generateQuestion, generateAIAnswer, generateAIReaction } from './openai';
 
 const TOTAL_ROUNDS = 20;
-const NORMAL_TIMER = 60;
+const NORMAL_TIMER = 120;
 const DOUBLE_DARE_TIMER = 30;
 const DOUBLE_DARE_CHANCE = 0.2;
-const AI_ANSWER_INTERVAL = 4;
+const AI_ANSWER_INTERVAL = 0; // Disabled - AI never answers
 
 const SURPRISE_MESSAGE = 'Chut kab ragdoge mere muh pe?';
 
@@ -27,7 +27,7 @@ const gameState: GameState = {
   currentAnswerer: null,
   isDoubleDare: false,
   doubleDareQuestion: null,
-  timerSeconds: NORMAL_TIMER,
+  timerSeconds: 120,
   gameStarted: false,
   gameEnded: false,
 };
@@ -80,7 +80,7 @@ async function startNewRound(io: Server) {
   gameState.isDoubleDare = false;
   gameState.doubleDareQuestion = null;
 
-  const isAIAnswerRound = gameState.roundCount % AI_ANSWER_INTERVAL === 0;
+  const isAIAnswerRound = AI_ANSWER_INTERVAL > 0 && gameState.roundCount % AI_ANSWER_INTERVAL === 0;
 
   const gptResponse = await generateQuestion(gameState.currentMode, gameState.lastQuestions);
 

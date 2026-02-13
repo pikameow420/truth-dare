@@ -17,7 +17,7 @@ const MODEL = process.env.GPT_MODEL || 'gpt-4o-mini';
 const MODE_DESCRIPTIONS: Record<GameMode, string> = {
   cute: 'sweet, wholesome, and adorable. Think butterflies, first memories, and inside jokes.',
   deep: 'emotionally vulnerable and introspective. Think fears, dreams, and unspoken feelings.',
-  spicy: 'flirty, bold, and a little provocative. Think tension, attraction, and playful teasing.',
+  spicy: 'bold, provocative, and steamy. Think physical attraction, secret desires, fantasies, and what really turns you on. Push boundaries but keep it playful.',
   future: 'forward-looking and hopeful. Think plans, goals, and what you want to build together.',
 };
 
@@ -48,18 +48,24 @@ export async function generateQuestion(
         { role: 'system', content: SYSTEM_PROMPT },
         {
           role: 'user',
-          content: `Generate a single Truth question in "${mode}" mode. The tone should be ${MODE_DESCRIPTIONS[mode]}
+          content: `Generate a completely original Truth question in "${mode}" mode. The tone should be ${MODE_DESCRIPTIONS[mode]}
+
+CRITICAL: Create something NEW and SPECIFIC to this couple's 3-year relationship. Avoid generic templates. Think about:
+- Their shared memories and inside jokes
+- Physical details and intimate moments
+- Future plans and dreams together
+- Vulnerable emotions and desires
 
 Return ONLY valid JSON in this exact format:
 {
-  "question": "your question here",
+  "question": "your unique, specific question here",
   "double_dare": "an optional escalation/follow-up dare (or null if none)",
   "ai_comment": "a short playful comment from you about this question (1-2 sentences)"
 }${avoidList}`,
         },
       ],
-      temperature: 0.9,
-      max_tokens: 300,
+      temperature: 1.1,
+      max_tokens: 350,
     });
 
     const content = response.choices[0]?.message?.content?.trim();
@@ -152,21 +158,29 @@ function getFallbackQuestion(mode: GameMode): GPTResponse {
       { question: "What's a tiny habit of theirs that you secretly find adorable but have never mentioned?", ai_comment: "Time to expose the cute stalker behavior 👀" },
       { question: "If you could relive one ordinary moment from your relationship, which random Tuesday would you pick?", ai_comment: "Not the big moments — the little ones hit different 🥺" },
       { question: "What's something they do that instantly makes you smile, even on your worst days?", ai_comment: "I already know this is going to be wholesome 🥹" },
+      { question: "What's the most embarrassing thing that happened early in your relationship that you both laugh about now?", ai_comment: "Cringe memories are the best memories 😂" },
+      { question: "If you had to describe their laugh in three words, what would they be?", ai_comment: "This is suspiciously romantic 🥰" },
     ],
     deep: [
       { question: "What's one fear about the future of this relationship that you've never said out loud?", ai_comment: "Okay we're going there. Buckle up 🫣" },
       { question: "When was the last time you cried because of something related to this relationship, and what triggered it?", ai_comment: "Vulnerability unlocked. This is where it gets real 💔" },
       { question: "What's one thing you wish you could change about how you show love?", ai_comment: "Self-awareness is the most attractive quality, just saying 🪞" },
+      { question: "What's a moment when you felt completely understood by them, even without words?", ai_comment: "That soulmate moment... I see it ✨" },
+      { question: "What's something about them that intimidates you in a good way?", ai_comment: "The healthy fear... I get it 🌊" },
     ],
     spicy: [
-      { question: "What's something you've wanted to try together but have been too shy to bring up?", ai_comment: "The chat just got interesting 🔥" },
-      { question: "Describe the most attractive version of them you've ever seen — what were they wearing, doing, saying?", ai_comment: "Paint the picture. I'm invested 🎨" },
-      { question: "If you had to describe your chemistry in one word, what would it be and why?", ai_comment: "Choose wisely... they're watching 😏" },
+      { question: "What's a fantasy about them that you've never told anyone?", ai_comment: "Oh, we're going there now... 🔥" },
+      { question: "Describe the exact moment you knew you wanted them physically — what were they doing?", ai_comment: "The details matter... spill 🌶️" },
+      { question: "What's something they do that instantly makes you want to kiss them?", ai_comment: "I'm taking notes for later 😏" },
+      { question: "What's the most attractive thing they do when they think no one is watching?", ai_comment: "The secret observations... I love these 🕵️" },
+      { question: "If you could have one night with zero rules, what would you want to do together?", ai_comment: "No rules night sounds... interesting 😈" },
     ],
     future: [
       { question: "Where do you see the two of you living in 5 years, and what does a normal morning look like?", ai_comment: "Manifesting hours are open ✨" },
       { question: "What's one experience you absolutely need to share together before you're old and grey?", ai_comment: "Bucket list energy. I love it 🗺️" },
       { question: "If distance was never a factor, what would your life together look like right now?", ai_comment: "The parallel universe question. This one hits 🌍" },
+      { question: "What's a tradition you want to start together that you'll still be doing in 10 years?", ai_comment: "Building rituals... this is serious stuff 💍" },
+      { question: "What's one goal you want to achieve together that seems impossible but you'll make happen anyway?", ai_comment: "The power couple goals are showing 🚀" },
     ],
   };
 

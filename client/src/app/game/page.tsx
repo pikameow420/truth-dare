@@ -44,8 +44,8 @@ export default function GamePage() {
   const router = useRouter();
   const [currentMode, setCurrentMode] = useState<GameMode>('cute');
   const [questionData, setQuestionData] = useState<QuestionData | null>(null);
-  const [timerSeconds, setTimerSeconds] = useState(60);
-  const [maxTimer, setMaxTimer] = useState(60);
+  const [timerSeconds, setTimerSeconds] = useState(120);
+  const [maxTimer, setMaxTimer] = useState(120);
   const [aiMessages, setAiMessages] = useState<AIMessage[]>([]);
   const [lastAnswer, setLastAnswer] = useState<AnswerData | null>(null);
   const [isDoubleDare, setIsDoubleDare] = useState(false);
@@ -77,8 +77,8 @@ export default function GamePage() {
       setAnswered(false);
       setIsDoubleDare(false);
       setDoubleDareQuestion(null);
-      setMaxTimer(60);
-      setTimerSeconds(60);
+      setMaxTimer(120);
+      setTimerSeconds(120);
     });
 
     socket.on('timer_update', (data: { seconds: number }) => {
@@ -163,7 +163,7 @@ export default function GamePage() {
       {/* Header */}
       <div className="flex flex-col items-center gap-4 mb-6">
         <h2 className="text-sm font-medium text-white/30">
-          💘 Truth or Dare — 3 Year Edition
+          💘 Truth or Dare - Meow Meow, Adithi
         </h2>
         <ModeSelector
           currentMode={currentMode}
